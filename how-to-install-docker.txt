@@ -1,0 +1,79 @@
+NB!!!! Installing Docker on Ubuntu Quick Fix
+URL: http://tekhead.it/2014/09/installing-docker-on-ubuntu-quick-fix/
+
+I've installed the linux-image-extra-3.19.0-33-generic package (additional drivers), and it fixed the issue without reboot.
+sudo apt-get install linux-image-extra-3.19.0-33  linux-headers-3.19.0-33-generic
+
+NB! If you have old containers (from example course delete it and other trash):
+rm -rf /var/lib/docker/*
+
+Prerequisites by Ubuntu Version
+Ubuntu Wily 15.10
+Ubuntu Trusty 14.04 (LTS)
+For Ubuntu Trusty and Wily, it’s recommended to install the linux-image-extra kernel package. The linux-image-extra package allows you use the aufs storage driver.
+
+To install the linux-image-extra package for your kernel version:
+
+Open a terminal on your Ubuntu host.
+
+Update your package manager.
+
+$ sudo apt-get update
+Install the recommended package.
+
+$ sudo apt-get install linux-image-extra-$(uname -r)
+Go ahead and install Docker.
+
+If you are installing on Ubuntu 14.04 or 12.04, apparmor is required. You can install it using: apt-get install apparmor
+
+
+Update your apt sources
+Docker’s APT repository contains Docker 1.7.1 and higher. To set APT to use packages from the new repository:
+
+If you haven’t already done so, log into your Ubuntu instance as a privileged user.
+
+Open a terminal window.
+
+Update package information, ensure that APT works with the https method, and that CA certificates are installed.
+
+ $ apt-get update
+ $ apt-get install apt-transport-https ca-certificates
+Add the new GPG key.
+
+$ sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+Open the /etc/apt/sources.list.d/docker.list file in your favorite editor.
+
+If the file doesn’t exist, create it.
+
+Remove any existing entries.
+
+Add an entry for your Ubuntu operating system.
+
+The possible entries are:
+
+On Ubuntu Precise 12.04 (LTS)
+
+deb https://apt.dockerproject.org/repo ubuntu-precise main
+On Ubuntu Trusty 14.04 (LTS)
+
+deb https://apt.dockerproject.org/repo ubuntu-trusty main
+Ubuntu Wily 15.10
+
+deb https://apt.dockerproject.org/repo ubuntu-wily main
+Note: Docker does not provide packages for all architectures. To install docker on a multi-architecture system, add an [arch=...] clause to the entry. Refer to the Debian Multiarch wiki for details.
+
+Save and close the /etc/apt/sources.list.d/docker.list file.
+
+Update the APT package index.
+
+$ apt-get update
+Purge the old repo if it exists.
+
+$ apt-get purge lxc-docker
+Verify that APT is pulling from the right repository.
+
+$ apt-cache policy docker-engine
+From now on when you run apt-get upgrade, APT pulls from the new repository.
+
+
+
